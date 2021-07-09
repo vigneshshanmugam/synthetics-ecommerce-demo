@@ -28,9 +28,9 @@ const Checkout = ({}) => {
   if (!order) {
     return <NoOrders />;
   }
+  window.sessionStorage.removeItem("order");
 
   const details = JSON.parse(order);
-  console.log("details", details);
   const { order_id, tracking_id, items, recommendations } = details;
 
   let Rendered = null;

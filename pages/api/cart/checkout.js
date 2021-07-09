@@ -19,8 +19,6 @@ export default async function handler(req, res) {
   const order_id = createUniqueId(ORDER);
   const tracking_id = createUniqueId(TRACKING);
 
-  console.log("list", list);
-
   if (!list) {
     return res.json({
       items: [],
