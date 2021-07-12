@@ -1,17 +1,14 @@
-import { cache, getProduct, getRecommendedProducts } from "../";
+import { getProduct, getRecommendedProducts } from "../";
 
 export default async function handler(req, res) {
-  const sessionId = req.cookies["session_id"];
-  const list = cache.get(sessionId);
+  const itemsInSession = req.body;
   const recommendations = getRecommendedProducts(null).slice(0, 4);
-
-  if (!list) {
+  if (!itemsInSession) {
     return res.json({
       items: [],
       recommendations,
     });
   }
-  const itemsInSession = list.items;
   const items = itemsInSession.map((item) => ({
     ...getProduct(item.id),
     quantity: item.quantity,

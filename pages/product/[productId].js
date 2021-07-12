@@ -1,11 +1,13 @@
 import React from "react";
 import { Form, Field } from "react-final-form";
 import useSWR from "swr";
+import Cookies from "js-cookie";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Price from "../../components/Price";
 import Recommendations from "../../components/Recommendations";
 import Ad from "../../components/Ad";
+import * as storage from "../storage";
 
 export async function getServerSideProps({ params }) {
   return {
@@ -15,16 +17,16 @@ export async function getServerSideProps({ params }) {
   };
 }
 
-const onSubmit = async (values) => {
-  const response = await fetch(`/api/cart/add`, {
-    method: "post",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(values),
-  });
-  const data = await response.json();
-  window.location.replace(data.redirect);
+const onSubmit = async (value) => {
+  const sessionId = Cookies.get("session_id");
+  if (!storage.get(sessionId)) {
+    storage.set(sessionId, []);
+  }
+  const { productId, quantity } = value;
+  const items = storage.get(sessionId);
+  items.push({ id: productId, quantity });
+  storage.set(sessionId, items);
+  window.location.replace("/cart");
 };
 
 const ProductForm = ({ data }) => (

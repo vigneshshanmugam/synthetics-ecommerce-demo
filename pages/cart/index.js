@@ -1,11 +1,13 @@
 import React from "react";
 import { Form } from "react-final-form";
 import useSWR from "swr";
+import Cookies from "js-cookie";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Price, { TotalPrice } from "../../components/Price";
 import CheckoutDetails from "../../components/CheckoutDetails";
 import Recommendations from "../../components/Recommendations";
+import * as storage from "../storage";
 
 const CartForm = () => {
   const onSubmit = async () => {
@@ -38,8 +40,13 @@ const CartForm = () => {
 };
 
 const Cart = () => {
+  const sessionId = Cookies.get("session_id");
   const { data, error } = useSWR(`/api/cart`, (url) =>
-    fetch(url).then((r) => r.json())
+    fetch(url, {
+      method: "post",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(storage.get(sessionId)),
+    }).then((r) => r.json())
   );
   if (error) return <div>Failed to load products</div>;
   if (!data) return <div>loading products...</div>;
