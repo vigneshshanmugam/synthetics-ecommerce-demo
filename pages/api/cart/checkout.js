@@ -1,4 +1,4 @@
-import { cache, getProduct, getRecommendedProducts } from "../";
+import { getProduct, getRecommendedProducts } from "../";
 
 const ORDER = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
 const TRACKING = "xx-xxxxxx-xxyxxx";
@@ -12,14 +12,13 @@ const createUniqueId = (str) => {
 };
 
 export default async function handler(req, res) {
-  const sessionId = req.cookies["session_id"];
-  const list = cache.get(sessionId);
+  const itemsInSession = req.body;
   const recommendations = getRecommendedProducts(null).slice(0, 4);
 
   const order_id = createUniqueId(ORDER);
   const tracking_id = createUniqueId(TRACKING);
 
-  if (!list) {
+  if (!itemsInSession) {
     return res.json({
       items: [],
       order_id,
@@ -27,13 +26,10 @@ export default async function handler(req, res) {
       recommendations,
     });
   }
-  const itemsInSession = list.items;
   const items = itemsInSession.map((item) => ({
     ...getProduct(item.id),
     quantity: item.quantity,
   }));
-
-  cache.del(sessionId);
 
   res.json({
     items,

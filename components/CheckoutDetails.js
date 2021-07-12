@@ -1,16 +1,21 @@
+import Cookies from "js-cookie";
 import React from "react";
 import { Form, Field } from "react-final-form";
 
-const onSubmit = async (values) => {
+const onSubmit = async () => {
+  const sessionId = Cookies.get("session_id");
+  const storage = window.sessionStorage;
   const response = await fetch(`/api/cart/checkout`, {
     method: "post",
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify(values),
+    body: storage.getItem(sessionId),
   });
   const data = await response.json();
-  window.sessionStorage.setItem("order", JSON.stringify(data));
+  storage.setItem("order", JSON.stringify(data));
+  // clear items in cart
+  storage.removeItem(sessionId);
   window.location.replace("/cart/checkout");
 };
 

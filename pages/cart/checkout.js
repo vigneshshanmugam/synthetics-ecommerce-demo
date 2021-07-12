@@ -3,6 +3,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Recommendations from "../../components/Recommendations";
 import { renderTotalCost, getShippingCost } from "../../components/Price";
+import * as storage from "../storage";
 
 const Checkout = ({}) => {
   const NoOrders = () => (
@@ -24,14 +25,13 @@ const Checkout = ({}) => {
   if (!global.window) {
     return <NoOrders />;
   }
-  const order = window.sessionStorage.getItem("order");
-  if (!order) {
+  const orderDetails = storage.get("order");
+  if (!orderDetails) {
     return <NoOrders />;
   }
-  window.sessionStorage.removeItem("order");
-
-  const details = JSON.parse(order);
-  const { order_id, tracking_id, items, recommendations } = details;
+  // clear order
+  storage.del("order");
+  const { order_id, tracking_id, items, recommendations } = orderDetails;
 
   let Rendered = null;
   if (items && items.length > 0) {
@@ -58,11 +58,7 @@ const Checkout = ({}) => {
       </>
     );
   } else {
-    Rendered = () => (
-      <>
-        <h3>No orders found</h3>
-      </>
-    );
+    Rendered = <NoOrders />;
   }
 
   return (

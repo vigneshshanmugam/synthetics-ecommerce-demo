@@ -1,10 +1,3 @@
-import LRU from "lru-cache";
-
-export const cache = new LRU({
-  max: 200,
-  maxAge: 6 * 24 * 60 * 60 * 1000,
-});
-
 export const getProducts = () => [
   {
     id: "OLJCESPC7Z",
