@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Recommendations from "../../components/Recommendations";
 import { renderTotalCost, getShippingCost } from "../../components/Price";
-import * as storage from "../storage";
+import * as storage from "../../utils/storage";
 
 const Checkout = ({}) => {
   const NoOrders = () => (

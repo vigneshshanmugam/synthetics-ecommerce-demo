@@ -7,7 +7,7 @@ import Footer from "../../components/Footer";
 import Price from "../../components/Price";
 import Recommendations from "../../components/Recommendations";
 import Ad from "../../components/Ad";
-import * as storage from "../storage";
+import * as storage from "../../utils/storage";
 
 export async function getServerSideProps({ params }) {
   return {

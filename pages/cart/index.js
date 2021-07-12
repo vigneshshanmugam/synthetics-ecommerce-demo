@@ -7,7 +7,7 @@ import Footer from "../../components/Footer";
 import Price, { TotalPrice } from "../../components/Price";
 import CheckoutDetails from "../../components/CheckoutDetails";
 import Recommendations from "../../components/Recommendations";
-import * as storage from "../storage";
+import * as storage from "../../utils/storage";
 
 const CartForm = () => {
   const onSubmit = () => {
