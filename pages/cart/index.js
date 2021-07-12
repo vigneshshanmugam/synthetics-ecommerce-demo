@@ -10,16 +10,10 @@ import Recommendations from "../../components/Recommendations";
 import * as storage from "../storage";
 
 const CartForm = () => {
-  const onSubmit = async () => {
-    const response = await fetch(`/api/cart/empty`, {
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({}),
-    });
-    const data = await response.json();
-    window.location.replace(data.redirect);
+  const onSubmit = () => {
+    const sessionId = Cookies.get("session_id");
+    storage.del(sessionId);
+    window.location.replace("/");
   };
 
   return (
